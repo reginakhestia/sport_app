@@ -1,0 +1,354 @@
+/* Theme variables fall back to sensible dark values; overwritten from
+   Telegram themeParams at runtime so the app matches the user's client. */
+:root {
+  --bg: #17212b;
+  --bg-elev: #1d2733;
+  --card: #232e3c;
+  --text: #ffffff;
+  --hint: #8a9aa9;
+  --accent: #4ea4f6;
+  --accent-text: #ffffff;
+  --good: #4caf50;
+  --warn: #e8a33d;
+  --danger: #e25555;
+  --line: #2b3848;
+  --radius: 16px;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.45;
+  overscroll-behavior-y: contain;
+}
+
+#app {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 16px 16px calc(24px + env(safe-area-inset-bottom));
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 22px;
+  margin: 4px 0 2px;
+}
+h2 {
+  font-size: 18px;
+  margin: 0 0 8px;
+}
+.hint {
+  color: var(--hint);
+  font-size: 14px;
+}
+
+/* ---- Buttons ---- */
+button {
+  font: inherit;
+  cursor: pointer;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 18px;
+  background: var(--card);
+  color: var(--text);
+  transition: transform 0.05s ease, opacity 0.15s ease;
+}
+button:active {
+  transform: scale(0.97);
+}
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+  width: 100%;
+}
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--hint);
+}
+.btn-row {
+  display: flex;
+  gap: 10px;
+}
+.btn-row > button {
+  flex: 1;
+}
+
+/* ---- Cards ---- */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.card-tappable {
+  cursor: pointer;
+}
+
+/* ---- Home tracking ---- */
+.slots {
+  display: flex;
+  gap: 10px;
+  margin: 12px 0;
+}
+.slot {
+  flex: 1;
+  text-align: center;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+.slot.done {
+  background: rgba(76, 175, 80, 0.15);
+  border-color: var(--good);
+}
+.slot .big {
+  font-size: 26px;
+}
+.slot .lbl {
+  font-size: 13px;
+  color: var(--hint);
+}
+
+.stat-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.stat {
+  flex: 1;
+  text-align: center;
+  background: var(--bg-elev);
+  border-radius: 12px;
+  padding: 12px 8px;
+}
+.stat .num {
+  font-size: 24px;
+  font-weight: 700;
+}
+.stat .lbl {
+  font-size: 12px;
+  color: var(--hint);
+}
+
+/* calendar strip */
+.strip {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.day {
+  flex: 1 0 auto;
+  min-width: 26px;
+  height: 34px;
+  border-radius: 7px;
+  background: var(--bg-elev);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+.day .half {
+  flex: 1;
+}
+.day .half.on {
+  background: var(--good);
+}
+
+/* ---- Block / exercise lists ---- */
+.block-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 18px 0 8px;
+}
+.block-head .num {
+  background: var(--accent);
+  color: #fff;
+  border-radius: 8px;
+  padding: 2px 8px;
+  font-weight: 700;
+  font-size: 14px;
+}
+.ex-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ex-item .body {
+  flex: 1;
+  min-width: 0;
+}
+.ex-item .t {
+  font-weight: 600;
+}
+.ex-item .s {
+  color: var(--hint);
+  font-size: 13px;
+}
+.badge {
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.badge.right {
+  background: rgba(78, 164, 246, 0.2);
+  color: var(--accent);
+}
+.badge.both {
+  background: rgba(138, 154, 169, 0.2);
+  color: var(--hint);
+}
+.check {
+  color: var(--good);
+  font-size: 20px;
+  width: 22px;
+  text-align: center;
+}
+
+ul.desc {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+ul.desc li {
+  margin-bottom: 6px;
+}
+.cue {
+  background: rgba(232, 163, 61, 0.12);
+  border-left: 3px solid var(--warn);
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin: 8px 0;
+}
+
+/* ---- Player ---- */
+.player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 70vh;
+  justify-content: center;
+}
+.ring-wrap {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  margin: 8px 0 16px;
+}
+.ring-wrap svg {
+  transform: rotate(-90deg);
+}
+.ring-bg {
+  stroke: var(--line);
+}
+.ring-fg {
+  stroke: var(--accent);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.2s linear;
+}
+.ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.ring-center .time {
+  font-size: 56px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.ring-center .phase {
+  font-size: 18px;
+  color: var(--accent);
+}
+.player .sub {
+  color: var(--hint);
+  margin-bottom: 18px;
+}
+.player .ex-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--line);
+  border-radius: 3px;
+  margin: 10px 0 18px;
+  overflow: hidden;
+}
+.progress-bar > div {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.2s ease;
+}
+.controls {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  margin-top: 8px;
+}
+.controls > button {
+  flex: 1;
+}
+
+.toggle-row {
+  display: flex;
+  gap: 10px;
+  margin: 12px 0;
+}
+.toggle {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--bg-elev);
+  font-size: 14px;
+}
+.toggle.on {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.warn-list {
+  font-size: 14px;
+}
+.warn-list .head {
+  font-weight: 600;
+  margin: 10px 0 4px;
+}
+.danger-card {
+  border: 1px solid var(--danger);
+}
+.spacer {
+  height: 8px;
+}
+.done-screen {
+  text-align: center;
+  padding-top: 40px;
+}
+.done-screen .big {
+  font-size: 56px;
+}
