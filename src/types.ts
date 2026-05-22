@@ -39,6 +39,12 @@ export interface RepStep {
   count: number;
   /** seconds per rep (tempo). If omitted, reps are user-paced with a single tick. */
   secondsPerRep?: number;
+  /**
+   * Tempo broken into phases — when set, the engine voices "Вверх"/"Вниз"
+   * (and optionally a hold) instead of one announcement per rep. Overrides
+   * `secondsPerRep`. `up` = lift, `hold` = pause at top, `down` = lower.
+   */
+  tempo?: { up: number; hold?: number; down: number };
   /** number of sets */
   sets?: number;
   /** rest between sets, seconds */

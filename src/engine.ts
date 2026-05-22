@@ -100,16 +100,47 @@ function expandStep(step: ExerciseStep, phases: Phase[]) {
     }
     phases.push({ kind: "countdown", seconds: 3, label: "Приготовься" });
     for (let r = 1; r <= step.count; r++) {
-      const dur = step.secondsPerRep ?? 2;
-      phases.push({
-        kind: "rep",
-        seconds: dur,
-        // speak every rep number so you can count with eyes closed
-        announce: String(r),
-        label,
-        sub: `повтор ${r} из ${step.count}`,
-        startBeep: "tick",
-      });
+      const sub = `повтор ${r} из ${step.count}`;
+      if (step.tempo) {
+        // Voiced tempo: "Вверх N" → ["Держи"] → "Вниз".
+        phases.push({
+          kind: "rep",
+          seconds: step.tempo.up,
+          announce: `Вверх ${r}`,
+          label: "Вверх",
+          sub,
+          startBeep: "go",
+        });
+        if (step.tempo.hold) {
+          phases.push({
+            kind: "rep",
+            seconds: step.tempo.hold,
+            announce: "Держи",
+            label: "Держи",
+            sub,
+            startBeep: "tick",
+          });
+        }
+        phases.push({
+          kind: "rep",
+          seconds: step.tempo.down,
+          announce: "Вниз",
+          label: "Вниз",
+          sub,
+          startBeep: "halfway",
+        });
+      } else {
+        const dur = step.secondsPerRep ?? 2;
+        phases.push({
+          kind: "rep",
+          seconds: dur,
+          // speak every rep number so you can count with eyes closed
+          announce: String(r),
+          label,
+          sub,
+          startBeep: "tick",
+        });
+      }
     }
     phases.push({
       kind: "say",

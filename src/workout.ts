@@ -174,7 +174,7 @@ export const workout: Workout = {
           id: "e3_2",
           number: "3.2",
           title: "Ягодичный мостик с подушкой между коленями",
-          summary: "10 повторов × 2 подхода · отдых 30 сек",
+          summary: "10 повторов × 2 · подъём 4 / спуск 4 сек",
           side: "both",
           durationLabel: "2 минуты",
           description: [
@@ -190,7 +190,14 @@ export const workout: Workout = {
             {
               side: "both",
               steps: [
-                { kind: "reps", count: 10, secondsPerRep: 6, sets: 2, rest: 30, label: "мостик" },
+                {
+                  kind: "reps",
+                  count: 10,
+                  tempo: { up: 4, down: 4 },
+                  sets: 2,
+                  rest: 30,
+                  label: "мостик",
+                },
               ],
             },
           ],
@@ -199,7 +206,7 @@ export const workout: Workout = {
           id: "e3_3",
           number: "3.3",
           title: "Clamshell асимметричный",
-          summary: "Слева 8 · справа 15 × 2",
+          summary: "Слева 8 · справа 15 × 2 · подъём 3 / спуск 3 сек",
           side: "right",
           durationLabel: "3 минуты",
           description: [
@@ -216,13 +223,22 @@ export const workout: Workout = {
             {
               side: "left",
               intro: "Сначала левая сторона — лёжа на правом боку",
-              steps: [{ kind: "reps", count: 8, secondsPerRep: 3, label: "подъём колена" }],
+              steps: [
+                { kind: "reps", count: 8, tempo: { up: 3, down: 3 }, label: "подъём колена" },
+              ],
             },
             {
               side: "right",
               intro: "Теперь правая сторона — лёжа на левом боку",
               steps: [
-                { kind: "reps", count: 15, secondsPerRep: 3, sets: 2, rest: 30, label: "подъём колена" },
+                {
+                  kind: "reps",
+                  count: 15,
+                  tempo: { up: 3, down: 3 },
+                  sets: 2,
+                  rest: 30,
+                  label: "подъём колена",
+                },
               ],
             },
           ],
@@ -245,7 +261,14 @@ export const workout: Workout = {
             {
               side: "right",
               steps: [
-                { kind: "reps", count: 12, secondsPerRep: 6, sets: 2, rest: 30, label: "подъём ноги" },
+                {
+                  kind: "reps",
+                  count: 12,
+                  tempo: { up: 3, down: 3 },
+                  sets: 2,
+                  rest: 30,
+                  label: "подъём ноги",
+                },
               ],
             },
           ],
