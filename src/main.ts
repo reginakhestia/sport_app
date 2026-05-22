@@ -34,22 +34,15 @@ let view: View = { name: "home" };
 let engine: ExerciseEngine | null = null;
 
 // ---- Telegram chrome ----
+// The app uses a fixed pastel brand palette (see style.css) rather than the
+// user's Telegram theme, so the design stays consistent. We only sync the
+// Telegram window chrome (header + background) to our brand background so the
+// native frame blends in with the mini app.
+const BRAND_BG = "#f1e7e2";
 function applyTheme() {
   if (!tg) return;
-  const p = tg.themeParams;
-  const set = (cssVar: string, val?: string) => {
-    if (val) document.documentElement.style.setProperty(cssVar, val);
-  };
-  set("--bg", p.bg_color);
-  set("--card", p.secondary_bg_color);
-  set("--bg-elev", p.secondary_bg_color);
-  set("--text", p.text_color);
-  set("--hint", p.hint_color);
-  set("--accent", p.button_color);
-  set("--accent-text", p.button_text_color);
-  set("--line", p.section_separator_color);
-  tg.setHeaderColor?.(p.bg_color ?? "#17212b");
-  tg.setBackgroundColor?.(p.bg_color ?? "#17212b");
+  tg.setHeaderColor?.(BRAND_BG);
+  tg.setBackgroundColor?.(BRAND_BG);
 }
 
 function syncBackButton() {
@@ -265,6 +258,23 @@ function playerView(index: number): HTMLElement {
   svg.setAttribute("width", "240");
   svg.setAttribute("height", "240");
   svg.setAttribute("viewBox", "0 0 240 240");
+  // Peach→blue gradient referenced by .ring-fg (stroke: url(#ringGrad)).
+  const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+  const grad = document.createElementNS("http://www.w3.org/2000/svg", "linearGradient");
+  grad.setAttribute("id", "ringGrad");
+  grad.setAttribute("x1", "0");
+  grad.setAttribute("y1", "0");
+  grad.setAttribute("x2", "1");
+  grad.setAttribute("y2", "1");
+  const stop = (offset: string, color: string) => {
+    const s = document.createElementNS("http://www.w3.org/2000/svg", "stop");
+    s.setAttribute("offset", offset);
+    s.setAttribute("stop-color", color);
+    return s;
+  };
+  grad.append(stop("0%", "#f0a48a"), stop("100%", "#93b8d8"));
+  defs.append(grad);
+  svg.append(defs);
   const mkCircle = (cls: string) => {
     const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     c.setAttribute("cx", "120");
