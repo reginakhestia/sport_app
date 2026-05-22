@@ -352,3 +352,21 @@ ul.desc li {
 .done-screen .big {
   font-size: 56px;
 }
+
+/* Instruction block inside the player — left-aligned against the centered layout */
+.player .instr {
+  width: 100%;
+  text-align: left;
+  margin-top: 18px;
+}
+.instr-head {
+  font-weight: 600;
+  color: var(--hint);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+.player .instr .desc {
+  margin: 0;
+}

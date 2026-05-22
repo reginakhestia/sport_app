@@ -299,6 +299,14 @@ function playerView(index: number): HTMLElement {
   const skipBtn = el("button", { class: "btn-ghost" }, "Пропустить шаг ⏭");
   wrap.append(el("div", { class: "controls" }, skipBtn, playBtn));
 
+  // Full instruction, visible right here in the player so technique can be
+  // checked mid-exercise without leaving the timer.
+  const desc = el("ul", { class: "desc" });
+  for (const line of ex.description) desc.append(el("li", {}, line));
+  const instr = el("div", { class: "card instr" }, el("div", { class: "instr-head" }, "Инструкция"), desc);
+  for (const cue of ex.cues ?? []) instr.append(el("div", { class: "cue" }, "⚠️ " + cue));
+  wrap.append(instr);
+
   const update = (v: EngineView) => {
     timeEl.textContent = v.total > 0 ? String(v.remaining) : "•";
     phaseEl.textContent = v.label;

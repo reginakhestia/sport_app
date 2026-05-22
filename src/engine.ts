@@ -30,7 +30,7 @@ function expandStep(step: ExerciseStep, phases: Phase[]) {
       phases.push({
         kind: "breathIn",
         seconds: step.inhale,
-        announce: c === 1 ? "Вдох" : undefined,
+        announce: "Вдох",
         label: "Вдох",
         sub: `цикл ${c} из ${step.cycles}`,
         startBeep: "go",
@@ -38,6 +38,7 @@ function expandStep(step: ExerciseStep, phases: Phase[]) {
       phases.push({
         kind: "breathOut",
         seconds: step.exhale,
+        announce: "Выдох",
         label: "Выдох",
         sub: `цикл ${c} из ${step.cycles}`,
         startBeep: "halfway",
@@ -57,14 +58,19 @@ function expandStep(step: ExerciseStep, phases: Phase[]) {
         label: "Приготовься",
         sub: step.count > 1 ? `${i} из ${step.count}` : undefined,
       });
+      const counted = step.seconds <= 12; // short holds get a per-second beep
       phases.push({
         kind: "hold",
         seconds: step.seconds,
         label,
         sub: `удержание ${step.seconds} сек · ${i} из ${step.count}`,
         startBeep: "go",
-        tickEachSecond: step.seconds <= 12, // tick whole-second counts only for short holds
+        tickEachSecond: counted,
       });
+      // For counted holds, say "отпускай" at the end so the release is audible.
+      if (counted) {
+        phases.push({ kind: "say", seconds: 0, announce: "Отпускай", label, startBeep: "done" });
+      }
       if (step.rest && i < step.count) {
         phases.push({
           kind: "rest",
