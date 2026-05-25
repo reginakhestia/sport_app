@@ -212,11 +212,6 @@ export class Audio {
       this.currentSource = null;
     }
   }
-
-  /** True if voice clips can play (audio context exists). For diagnostics. */
-  get ready(): boolean {
-    return !!this.ctx;
-  }
 }
 
 export const audio = new Audio();
