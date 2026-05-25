@@ -34,13 +34,20 @@
   --radius-sm: 14px;
   --radius-pill: 999px;
 
-  /* Soft, layered "clay" shadows */
-  --shadow: 0 10px 24px -12px rgba(120, 90, 78, 0.30),
-            0 2px 6px -2px rgba(120, 90, 78, 0.12);
-  --shadow-sm: 0 4px 12px -6px rgba(120, 90, 78, 0.25);
-  --shadow-inset: inset 0 1px 2px rgba(255, 255, 255, 0.9),
-                  inset 0 -2px 4px rgba(120, 90, 78, 0.06);
-  --shadow-press: 0 2px 6px -4px rgba(120, 90, 78, 0.30);
+  /* Deep, layered "clay" shadows — big soft drop + tight contact shadow,
+     plus inner top highlight and inner bottom shade to read as a 3D puff. */
+  --shadow: 0 22px 40px -14px rgba(120, 80, 66, 0.40),
+            0 6px 14px -6px rgba(120, 80, 66, 0.22),
+            inset 0 2px 2px rgba(255, 255, 255, 0.85),
+            inset 0 -8px 16px rgba(150, 110, 95, 0.10);
+  --shadow-sm: 0 10px 20px -8px rgba(120, 80, 66, 0.32),
+            inset 0 1px 1px rgba(255, 255, 255, 0.7),
+            inset 0 -4px 8px rgba(150, 110, 95, 0.08);
+  /* Pressed-in / concave well */
+  --shadow-inset: inset 0 3px 6px rgba(150, 110, 95, 0.18),
+                  inset 0 -2px 3px rgba(255, 255, 255, 0.8);
+  --shadow-press: 0 4px 10px -6px rgba(120, 80, 66, 0.35),
+                  inset 0 2px 5px rgba(150, 110, 95, 0.22);
 }
 
 * {
@@ -96,25 +103,34 @@ button {
   cursor: pointer;
   border: none;
   border-radius: var(--radius-sm);
-  padding: 15px 18px;
-  background: var(--card);
+  padding: 16px 18px;
+  background: linear-gradient(160deg, #fffdfb, var(--card) 55%, #f3e8e1);
   color: var(--text);
   box-shadow: var(--shadow-sm);
-  transition: transform 0.08s ease, box-shadow 0.15s ease, opacity 0.15s ease,
+  transition: transform 0.1s ease, box-shadow 0.15s ease, opacity 0.15s ease,
     background 0.15s ease;
 }
 button:active {
-  transform: translateY(1px) scale(0.985);
+  transform: translateY(2px) scale(0.98);
   box-shadow: var(--shadow-press);
 }
 .btn-primary {
-  background: linear-gradient(135deg, #f6b29b 0%, var(--accent) 60%, #ec9379 100%);
+  /* Glossy peach pill: bright top stop reads as a specular highlight. */
+  background: linear-gradient(180deg, #ffc4ad 0%, var(--accent) 48%, #e88a6e 100%);
   color: var(--accent-text);
   font-weight: 700;
   width: 100%;
+  padding: 18px;
   letter-spacing: 0.01em;
-  box-shadow: 0 10px 22px -8px rgba(240, 124, 96, 0.55),
-    inset 0 1px 1px rgba(255, 255, 255, 0.45);
+  text-shadow: 0 1px 1px rgba(180, 80, 55, 0.35);
+  box-shadow: 0 16px 28px -10px rgba(235, 120, 92, 0.6),
+    0 4px 10px -4px rgba(235, 120, 92, 0.4),
+    inset 0 2px 2px rgba(255, 255, 255, 0.6),
+    inset 0 -5px 10px rgba(190, 90, 65, 0.3);
+}
+.btn-primary:active {
+  box-shadow: 0 6px 14px -8px rgba(235, 120, 92, 0.6),
+    inset 0 3px 7px rgba(190, 90, 65, 0.4);
 }
 .btn-ghost {
   background: var(--card);
@@ -132,10 +148,11 @@ button:active {
 
 /* ---- Cards ---- */
 .card {
-  background: var(--card);
+  /* Top-lit convex surface: lighter at top, slightly deeper at bottom. */
+  background: linear-gradient(160deg, #fffdfb 0%, var(--card) 45%, #f4e9e2 100%);
   border-radius: var(--radius);
   padding: 18px;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
   box-shadow: var(--shadow);
 }
 .card-tappable {
@@ -156,15 +173,18 @@ button:active {
 .slot {
   flex: 1;
   text-align: center;
-  padding: 18px 14px;
+  padding: 22px 14px;
   border-radius: var(--radius);
-  background: var(--card);
+  background: linear-gradient(160deg, #fffdfb, var(--card) 50%, #f3e8e1);
   box-shadow: var(--shadow);
-  transition: box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 .slot.done {
-  background: linear-gradient(160deg, var(--good-soft), #c7e6d6);
-  box-shadow: 0 10px 22px -10px rgba(95, 170, 130, 0.5);
+  background: linear-gradient(160deg, #e6f4ec 0%, var(--good-soft) 45%, #b9e0cb 100%);
+  box-shadow: 0 20px 34px -12px rgba(95, 170, 130, 0.5),
+    0 5px 12px -5px rgba(95, 170, 130, 0.35),
+    inset 0 2px 2px rgba(255, 255, 255, 0.8),
+    inset 0 -7px 14px rgba(80, 150, 110, 0.14);
 }
 .slot .big {
   font-size: 30px;
@@ -187,10 +207,10 @@ button:active {
 .stat {
   flex: 1;
   text-align: center;
-  background: var(--card);
+  background: linear-gradient(160deg, #fffdfb, var(--card) 55%, #f3e8e1);
   border-radius: var(--radius-sm);
-  padding: 14px 8px;
-  box-shadow: var(--shadow-inset), var(--shadow-sm);
+  padding: 16px 8px;
+  box-shadow: var(--shadow-sm);
 }
 .stat .num {
   font-size: 26px;
@@ -240,18 +260,21 @@ button:active {
   padding-left: 2px;
 }
 .block-head .num {
-  background: linear-gradient(135deg, var(--accent-2), #7ba6c9);
+  background: linear-gradient(180deg, #b3d0e6 0%, var(--accent-2) 50%, #6f9cc1 100%);
   color: #fff;
   border-radius: var(--radius-pill);
-  min-width: 28px;
-  height: 28px;
+  min-width: 30px;
+  height: 30px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0 10px;
   font-weight: 800;
   font-size: 14px;
-  box-shadow: 0 4px 10px -4px rgba(123, 166, 201, 0.7);
+  text-shadow: 0 1px 1px rgba(70, 110, 145, 0.4);
+  box-shadow: 0 8px 16px -6px rgba(110, 156, 193, 0.7),
+    inset 0 1.5px 1px rgba(255, 255, 255, 0.55),
+    inset 0 -3px 6px rgba(80, 120, 155, 0.35);
 }
 .ex-item {
   display: flex;
@@ -333,15 +356,17 @@ ul.desc li::marker {
 }
 .ring-wrap {
   position: relative;
-  width: 240px;
-  height: 240px;
-  margin: 10px 0 18px;
+  width: 248px;
+  height: 248px;
+  margin: 12px 0 20px;
   border-radius: 50%;
-  /* Raised clay puck behind the ring */
-  background: radial-gradient(circle at 38% 32%, #fffaf6 0%, #f4e7e0 75%);
-  box-shadow: 0 18px 36px -16px rgba(120, 90, 78, 0.45),
-    inset 0 2px 4px rgba(255, 255, 255, 0.9),
-    inset 0 -6px 12px rgba(120, 90, 78, 0.08);
+  /* Raised clay puck behind the ring: strong off-axis highlight + deep
+     drop shadow + inner bottom shade give a pronounced spherical bulge. */
+  background: radial-gradient(circle at 36% 28%, #ffffff 0%, #fdf6f1 38%, #f0e2da 78%, #e8d6cc 100%);
+  box-shadow: 0 30px 50px -18px rgba(120, 80, 66, 0.5),
+    0 10px 22px -10px rgba(120, 80, 66, 0.3),
+    inset 0 4px 6px rgba(255, 255, 255, 0.95),
+    inset 0 -12px 24px rgba(140, 100, 86, 0.16);
 }
 .ring-wrap svg {
   transform: rotate(-90deg);
@@ -419,20 +444,26 @@ ul.desc li::marker {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 13px;
+  padding: 14px;
   border-radius: var(--radius-sm);
-  background: var(--card);
+  /* Off = pressed-in well */
+  background: var(--card-2);
   font-size: 14px;
   font-weight: 600;
   color: var(--text-soft);
   box-shadow: var(--shadow-inset);
   cursor: pointer;
-  transition: color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  transition: color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease,
+    transform 0.1s ease;
 }
 .toggle.on {
+  /* On = popped-out glossy peach button */
   color: var(--accent-text);
-  background: linear-gradient(135deg, #f6b29b, var(--accent));
-  box-shadow: 0 6px 14px -6px rgba(240, 124, 96, 0.6);
+  background: linear-gradient(180deg, #ffc4ad, var(--accent) 55%, #e88a6e);
+  text-shadow: 0 1px 1px rgba(180, 80, 55, 0.3);
+  box-shadow: 0 12px 22px -8px rgba(235, 120, 92, 0.6),
+    inset 0 1.5px 1px rgba(255, 255, 255, 0.55),
+    inset 0 -4px 9px rgba(190, 90, 65, 0.3);
 }
 
 .warn-list {
