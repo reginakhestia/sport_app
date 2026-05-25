@@ -262,8 +262,10 @@ function playerView(index: number): HTMLElement {
       style: { width: "100%", marginBottom: "8px" },
       onclick: () => {
         audio.unlock();
-        // Speak slightly after unlock so the gesture-primer doesn't collide.
-        window.setTimeout(() => audio.say("Проверка голоса. Раз, два, три."), 250);
+        // Play a few real clips so you can confirm voice works on this device.
+        window.setTimeout(() => audio.say("Вверх 1"), 250);
+        window.setTimeout(() => audio.say("2"), 1100);
+        window.setTimeout(() => audio.say("3"), 1700);
       },
     },
     "🔈 Проверить голос",
