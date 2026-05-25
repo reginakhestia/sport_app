@@ -253,6 +253,23 @@ function playerView(index: number): HTMLElement {
   });
   wrap.append(el("div", { class: "toggle-row" }, beepToggle, voiceToggle));
 
+  // Voice test — tap to confirm speech works on this device (mobile WebViews
+  // sometimes need the gesture to warm up the engine).
+  const testBtn = el(
+    "button",
+    {
+      class: "btn-ghost",
+      style: { width: "100%", marginBottom: "8px" },
+      onclick: () => {
+        audio.unlock();
+        // Speak slightly after unlock so the gesture-primer doesn't collide.
+        window.setTimeout(() => audio.say("Проверка голоса. Раз, два, три."), 250);
+      },
+    },
+    "🔈 Проверить голос",
+  );
+  wrap.append(testBtn);
+
   // Ring — built via SVG namespace (el() is HTML-only).
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("width", "240");

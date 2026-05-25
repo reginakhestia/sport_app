@@ -223,7 +223,12 @@ export class ExerciseEngine {
     this.remainingMs = p.seconds * 1000;
     this.lastTickSec = -1;
     if (p.startBeep) audio.beep(p.startBeep);
-    if (p.announce) audio.say(p.announce);
+    // Speak just after the beep — firing both at the exact same instant can let
+    // the WebAudio output starve the TTS engine on some mobile WebViews.
+    if (p.announce) {
+      const text = p.announce;
+      window.setTimeout(() => audio.say(text), 120);
+    }
     if (p.kind === "countdown") audio.countdown(p.seconds);
     // Zero-duration "say" phases advance on the next tick automatically.
     this.emit();

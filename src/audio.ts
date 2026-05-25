@@ -32,13 +32,18 @@ export class Audio {
   private loadVoice() {
     if (typeof speechSynthesis === "undefined") return;
     const voices = speechSynthesis.getVoices();
+    if (!voices.length) return; // not loaded yet — onvoiceschanged will retry
     this.ruVoice =
       voices.find((v) => v.lang.toLowerCase().startsWith("ru")) ??
       voices.find((v) => v.lang.toLowerCase().includes("ru")) ??
       null;
   }
 
-  /** Must be called from a user gesture to satisfy mobile autoplay policies. */
+  /**
+   * Must be called from a user gesture (the Start tap). On mobile WebViews the
+   * speech engine only "warms up" if the very first utterance is spoken inside
+   * that gesture — so we speak a real (silent) primer here, not just resume.
+   */
   unlock() {
     if (!this.ctx) {
       const Ctor =
@@ -49,11 +54,20 @@ export class Audio {
       this.master.connect(this.ctx.destination);
     }
     if (this.ctx.state === "suspended") void this.ctx.resume();
-    // Nudge speech engine awake with an empty utterance.
+
     if (this.voiceEnabled && typeof speechSynthesis !== "undefined") {
-      const u = new SpeechSynthesisUtterance(" ");
-      u.volume = 0;
-      speechSynthesis.speak(u);
+      this.loadVoice(); // voices are usually ready by the first tap
+      // Prime the engine with a real utterance during the gesture. Using a
+      // tiny near-silent word (not volume:0, which hangs some Android engines).
+      speechSynthesis.resume();
+      const primer = new SpeechSynthesisUtterance(" ");
+      primer.volume = 0.01;
+      primer.lang = "ru-RU";
+      try {
+        speechSynthesis.speak(primer);
+      } catch {
+        /* ignore */
+      }
     }
   }
 
@@ -106,12 +120,40 @@ export class Audio {
 
   say(text: string) {
     if (!this.voiceEnabled || typeof speechSynthesis === "undefined") return;
+    // Android/Telegram WebView frequently leaves the engine paused after a
+    // prior cancel(); resume() before every speak() keeps it from going mute.
+    try {
+      speechSynthesis.resume();
+    } catch {
+      /* ignore */
+    }
     const u = new SpeechSynthesisUtterance(text);
     u.lang = "ru-RU";
+    // Only pin a voice if we actually found a Russian one; otherwise let the
+    // platform pick by lang — pinning a null/absent voice silences output.
     if (this.ruVoice) u.voice = this.ruVoice;
     u.rate = 1.0;
     u.pitch = 1.0;
+    u.volume = 1.0;
     speechSynthesis.speak(u);
+    this.keepAlive();
+  }
+
+  // WebKit/Chromium pause the speech engine if an utterance runs >~15s or the
+  // tab loses focus; a periodic resume() keeps the queue moving. Cheap no-op
+  // when nothing is queued.
+  private keepAliveTimer: number | null = null;
+  private keepAlive() {
+    if (this.keepAliveTimer != null) return;
+    this.keepAliveTimer = window.setInterval(() => {
+      if (typeof speechSynthesis === "undefined") return;
+      if (speechSynthesis.speaking || speechSynthesis.pending) {
+        speechSynthesis.resume();
+      } else {
+        if (this.keepAliveTimer != null) window.clearInterval(this.keepAliveTimer);
+        this.keepAliveTimer = null;
+      }
+    }, 5000);
   }
 
   /** Stop any queued speech (e.g. on pause/skip). */
